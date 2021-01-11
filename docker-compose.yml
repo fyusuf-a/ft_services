@@ -13,13 +13,13 @@ services:
                 image: wordpress
                 build:
                     context: ./wordpress/
+                    args:
+                      WORDPRESS_DB_HOST: 'mysql:3306'
+                      WORDPRESS_DB_USER: 'wordpress'
+                      WORDPRESS_DB_PASSWORD: 'password'
+                      WORDPRESS_DB_NAME: 'wordpress'
                 ports:
                         - 5050:443
-                environment:
-                  WORDPRESS_DB_HOST: mysql
-                  WORDPRESS_DB_USER: user
-                  WORDPRESS_DB_PASSWORD: pass
-                  WORDPRESS_DB_NAME: wordpress
                 #volumes:
                   #- wordpress:/var/www/html
         mysql:

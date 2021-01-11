@@ -1,5 +1,15 @@
 FROM alpine
 
+ARG WORDPRESS_DB_HOST
+ARG WORDPRESS_DB_USER
+ARG WORDPRESS_DB_PASSWORD
+ARG WORDPRESS_DB_NAME
+
+RUN WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST:-localhost} && \
+		WORDPRESS_DB_USER=${WORDPRESS_DB_USER:-user} && \
+		WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD:-pass} && \
+		WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME:-wordpress}
+
 # TODO test which mysql library is useful
 RUN apk add --no-cache nginx php7-fpm php7-mysqli php7-mysqlnd php7-mbstring php7-json openssl
 
@@ -34,5 +44,11 @@ EXPOSE 443
 # Next line is to prevent error from the nginx executable not able to create a directory in /run
 RUN mkdir -p /run/nginx
 
+RUN sed -i 's/%WORDPRESS_DB_HOST%/'$WORDPRESS_DB_HOST'/g' /var/www/html/wordpress/wp-config.php && \
+		sed -i 's/%WORDPRESS_DB_USER%/'$WORDPRESS_DB_USER'/g' /var/www/html/wordpress/wp-config.php && \
+		sed -i 's/%WORDPRESS_DB_PASSWORD%/'$WORDPRESS_DB_PASSWORD'/g' /var/www/html/wordpress/wp-config.php && \
+		sed -i 's/%WORDPRESS_DB_NAME%/'$WORDPRESS_DB_NAME'/g' /var/www/html/wordpress/wp-config.php
+
 CMD php-fpm7 -D \
-	&& nginx -g 'daemon off;'
+	&& sleep infinity
+	#&& nginx -g 'daemon off;'

@@ -10,9 +10,9 @@ COPY srcs/create.sql ./
 
 RUN mysql_install_db --user=mysql
 
-RUN mariadb < create.sql && \
+RUN mysqld --user=mysql --bootstrap < create.sql && \
 		rm create.sql
 
 EXPOSE 3306
 
-CMD /usr/bin/mariadbd-safe --datadir='./data' ; sleep infinity
+#CMD /usr/bin/mariadbd-safe --datadir='./data' ; sleep infinity
