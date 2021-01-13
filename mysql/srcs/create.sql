@@ -1,3 +1,5 @@
-CREATE DATABASE wordpress;
-CREATE USER wordpress@localhost IDENTIFIED BY 'password';
-/*GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost;*/
+USE mysql;
+CREATE USER IF NOT EXISTS wordpress@'%' IDENTIFIED BY 'password';
+CREATE DATABASE IF NOT EXISTS wordpress;
+GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@'%';
+FLUSH PRIVILEGES;

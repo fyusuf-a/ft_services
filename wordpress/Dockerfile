@@ -11,7 +11,7 @@ RUN WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST:-localhost} && \
 		WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME:-wordpress}
 
 # TODO test which mysql library is useful
-RUN apk add --no-cache nginx php7-fpm php7-mysqli php7-mysqlnd php7-mbstring php7-json openssl
+RUN apk add --no-cache nginx php7-fpm php7-mysqli php7-mysqlnd php7-mbstring php7-json php7-phar openssl
 
 # nginx
 RUN rm /etc/nginx/conf.d/default.conf
@@ -35,6 +35,8 @@ COPY srcs/default.conf /etc/nginx/conf.d/default.conf
 RUN	rm /var/www/html/wordpress/wp-config-sample.php
 COPY srcs/wp-config.php /var/www/html/wordpress/
 
+COPY srcs/docker-entrypoint.sh /
+
 # SSL certificate
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout /etc/ssl/private/ssl-cert-snakeoil.key -out /etc/ssl/certs/ssl-cert-snakeoil.pem -subj '/CN=localhost'
 
@@ -49,6 +51,7 @@ RUN sed -i 's/%WORDPRESS_DB_HOST%/'$WORDPRESS_DB_HOST'/g' /var/www/html/wordpres
 		sed -i 's/%WORDPRESS_DB_PASSWORD%/'$WORDPRESS_DB_PASSWORD'/g' /var/www/html/wordpress/wp-config.php && \
 		sed -i 's/%WORDPRESS_DB_NAME%/'$WORDPRESS_DB_NAME'/g' /var/www/html/wordpress/wp-config.php
 
-CMD php-fpm7 -D \
-	&& sleep infinity
-	#&& nginx -g 'daemon off;'
+# Installing wp cli
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+CMD sh /docker-entrypoint.sh
