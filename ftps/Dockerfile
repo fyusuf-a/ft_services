@@ -11,4 +11,6 @@ RUN mkdir -p /var/ftp/anonymous && chown ftp:ftp /var/ftp/anonymous
 
 COPY README.txt /var/ftp/
 
+RUN touch /var/log/vsftpd.log
+
 CMD vsftpd /etc/vsftpd/vsftpd.conf 0>> /var/log/vsftpd.log & tail -f /var/log/vsftpd.log
