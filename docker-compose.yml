@@ -20,21 +20,22 @@ services:
                       WORDPRESS_DB_NAME: 'wordpress'
                 ports:
                         - 5050:443
-                #volumes:
-                  #- wordpress:/var/www/html
+                volumes:
+                  - wordpress:/var/www/html
         mysql:
                 image: mysqld # :5.7
                 build:
                     context: ./mysql
-                #environment:
-                  #MYSQL_DATABASE: wordpress
-                  #MYSQL_USER: wordpress
-                  #MYSQL_PASSWORD: password
-                  #MYSQL_RANDOM_ROOT_PASSWORD: '1'
-                #volumes:
-                  #- db:/var/lib/mysql
+                volumes:
+                    - mysql-data:/data
+                environment:
+                    MYSQL_DATABASE: wordpress
+                    MYSQL_USER: wordpress
+                    MYSQL_PASSWORD: password
+                    MYSQL_RANDOM_ROOT_PASSWORD: '1'
 
-#volumes:
+volumes:
+  mysql-data:
         #wordpress:
         #db:
 
