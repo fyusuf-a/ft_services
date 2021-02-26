@@ -1,41 +1,53 @@
 version: '3.1'
 
 services:
-        ftps:
-                image: vsftpd
-                build:
-                    context: ./ftps/
-                    dockerfile: Dockerfile
-                ports:
-                        - 21:21
-                        - 21000-21010:21000-21010
-        wordpress:
-                image: wordpress
-                build:
-                    context: ./wordpress/
-                    args:
-                      WORDPRESS_DB_HOST: 'mysql:3306'
-                      WORDPRESS_DB_USER: 'wordpress'
-                      WORDPRESS_DB_PASSWORD: 'password'
-                      WORDPRESS_DB_NAME: 'wordpress'
-                ports:
-                        - 5050:443
-                volumes:
-                  - wordpress:/var/www/html
-        mysql:
-                image: mysqld # :5.7
-                build:
-                    context: ./mysql
-                volumes:
-                    - mysql-data:/data
-                environment:
-                    MYSQL_DATABASE: wordpress
-                    MYSQL_USER: wordpress
-                    MYSQL_PASSWORD: password
-                    MYSQL_RANDOM_ROOT_PASSWORD: '1'
+        #ftps:
+                #image: vsftpd
+                #build:
+                    #context: ./ftps/
+                    #dockerfile: Dockerfile
+                #ports:
+                        #- 21:21
+                        #- 21000-21010:21000-21010
+        #wordpress:
+                #image: wordpress
+                #build:
+                    #context: ./wordpress/
+                    #args:
+                      #WORDPRESS_DB_HOST: 'mysql:3306'
+                      #WORDPRESS_DB_USER: 'wordpress'
+                      #WORDPRESS_DB_PASSWORD: 'password'
+                      #WORDPRESS_DB_NAME: 'wordpress'
+                #ports:
+                        #- 5050:443
+                #volumes:
+                  #- wordpress:/var/www/html
+        #mysql:
+                #image: mysqld # :5.7
+                #build:
+                    #context: ./mysql
+                #volumes:
+                    #- mysql-data:/data
+                #environment:
+                    #MYSQL_DATABASE: wordpress
+                    #MYSQL_USER: wordpress
+                    #MYSQL_PASSWORD: password
+                    #MYSQL_RANDOM_ROOT_PASSWORD: '1'
+        prometheus:
+            image: prom/prometheus
+            ports:
+                - 9090:9090
+            volumes:
+                - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+        influxdb:
+            image: influxdb
+            volumes:
+                - influxdb:/var/lib/influxdb2
+                - ./influxdb/config.yml:/etc/influxdb2/config.yml:ro
+
 
 volumes:
-  mysql-data:
-        #wordpress:
+    mysql-data:
+    wordpress:
         #db:
 
