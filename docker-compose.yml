@@ -23,7 +23,7 @@ services:
                 #volumes:
                   #- wordpress:/var/www/html
         #mysql:
-                #image: mysqld # :5.7
+                #image: mysqld
                 #build:
                     #context: ./mysql
                 #volumes:
@@ -41,13 +41,23 @@ services:
                 - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
         influxdb:
             image: influxdb
-            volumes:
-                - influxdb:/var/lib/influxdb2
-                - ./influxdb/config.yml:/etc/influxdb2/config.yml:ro
+            build:
+                context: ./influxdb
+            ports:
+                - 8086:8086
+            #environment:
+                #DOCKER_INFLUXDB_INIT_MODE: setup
+                #DOCKER_INFLUXDB_INIT_USERNAME: influxdb
+                #DOCKER_INFLUXDB_INIT_PASSWORD: password
+                #DOCKER_INFLUXDB_INIT_ORG: organization
+                #DOCKER_INFLUXDB_INIT_BUCKET: bucket
+            #volumes:
+                #- influxdb:/var/lib/influxdb2
+                #- ./influxdb/config.yml:/etc/influxdb2/config.yml:ro
 
 
 volumes:
     mysql-data:
     wordpress:
-        #db:
+    influxdb:
 
