@@ -1,4 +1,6 @@
-FROM alpine
+FROM alpine:3.12
+
+EXPOSE 8086
 
 RUN apk add --no-cache influxdb
 

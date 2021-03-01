@@ -1,5 +1,7 @@
 FROM alpine:3.7
 
+EXPOSE 3306
+
 RUN apk add --no-cache mysql mysql-client bash
 
 RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld

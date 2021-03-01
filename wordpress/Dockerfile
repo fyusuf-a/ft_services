@@ -1,5 +1,8 @@
 FROM alpine
 
+EXPOSE 80
+EXPOSE 443
+
 ARG WORDPRESS_DB_HOST
 ARG WORDPRESS_DB_USER
 ARG WORDPRESS_DB_PASSWORD
@@ -39,9 +42,6 @@ COPY srcs/docker-entrypoint.sh /
 
 # SSL certificate
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout /etc/ssl/private/ssl-cert-snakeoil.key -out /etc/ssl/certs/ssl-cert-snakeoil.pem -subj '/CN=localhost'
-
-EXPOSE 80
-EXPOSE 443
 
 # Next line is to prevent error from the nginx executable not able to create a directory in /run
 RUN mkdir -p /run/nginx
