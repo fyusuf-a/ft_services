@@ -33,27 +33,25 @@ services:
                     #MYSQL_USER: wordpress
                     #MYSQL_PASSWORD: password
                     #MYSQL_RANDOM_ROOT_PASSWORD: '1'
-        prometheus:
-            image: prom/prometheus
-            ports:
-                - 9090:9090
-            volumes:
-                - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
         influxdb:
             image: influxdb
             build:
                 context: ./influxdb
-            ports:
-                - 8086:8086
-            #environment:
-                #DOCKER_INFLUXDB_INIT_MODE: setup
-                #DOCKER_INFLUXDB_INIT_USERNAME: influxdb
-                #DOCKER_INFLUXDB_INIT_PASSWORD: password
-                #DOCKER_INFLUXDB_INIT_ORG: organization
-                #DOCKER_INFLUXDB_INIT_BUCKET: bucket
             #volumes:
-                #- influxdb:/var/lib/influxdb2
-                #- ./influxdb/config.yml:/etc/influxdb2/config.yml:ro
+                #- influxdb:/var/lib/influxdb
+        grafana:
+            image: grafana
+            build:
+                context: ./grafana
+            ports:
+                - 3000:3000
+                - 9090:9090
+        #prometheus:
+            #image: prometheus
+            #build:
+                #context: ./prometheus
+            #ports:
+                #- 9090:9090
 
 
 volumes:

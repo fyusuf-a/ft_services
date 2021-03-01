@@ -2,10 +2,9 @@ FROM alpine:3.12
 
 EXPOSE 8086
 
-RUN apk add --no-cache influxdb
+VOLUME /root/.influxdb
 
-#RUN mkdir -p /var/lib/influxdb && \
-	#chown influxdb:influxdb /var/lib/influxdb
+RUN apk add --no-cache influxdb
 
 COPY srcs/create.iql ./
 
