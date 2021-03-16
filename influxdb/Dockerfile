@@ -6,10 +6,18 @@ VOLUME /root/.influxdb
 
 RUN apk add --no-cache influxdb
 
-COPY srcs/create.iql ./
+COPY srcs/create.iql /
 
-RUN influxd > /dev/null 2>&1 & sleep 1 ; influx < create.iql
+COPY srcs/init_files /
+
+RUN influxd > /dev/null 2>&1 & sleep 1 ; \
+	influx < /create.iql ; \
+	rm create.iql
 
 RUN touch /var/log/influxdb.log
 
-CMD influxd > /var/log/influxdb.log 2>&1 & tail -f /var/log/influxdb.log
+COPY srcs/docker-entrypoint.sh /
+
+RUN chmod +x /docker-entrypoint.sh
+
+CMD /docker-entrypoint.sh
