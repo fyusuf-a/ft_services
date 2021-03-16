@@ -35,10 +35,10 @@ services:
                     #MYSQL_RANDOM_ROOT_PASSWORD: '1'
         influxdb:
             image: influxdb
+            volumes:
+                - mysql-data:/root/.influxdb
             build:
                 context: ./influxdb
-            #volumes:
-                #- influxdb:/var/lib/influxdb
         grafana:
             image: grafana
             build:
@@ -46,16 +46,8 @@ services:
             ports:
                 - 3000:3000
                 - 9090:9090
-        #prometheus:
-            #image: prometheus
-            #build:
-                #context: ./prometheus
-            #ports:
-                #- 9090:9090
-
 
 volumes:
+    influxdb-data:
     mysql-data:
     wordpress:
-    influxdb:
-
