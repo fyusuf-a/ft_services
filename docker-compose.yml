@@ -45,6 +45,11 @@ services:
                 context: ./grafana
             ports:
                 - 3000:3000
+        prometheus:
+            image: prometheus
+            build:
+                context: ./prometheus
+            ports:
                 - 9090:9090
 
 volumes:

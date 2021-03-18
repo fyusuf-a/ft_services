@@ -1,2 +1,4 @@
-[ ! -d /usr/share/grafana/conf ] && cp -R /grafana-conf /usr/share/grafana/conf ; rm -rf /grafana-conf
-[ ! -d /usr/share/grafana/public ] && cp -R /grafana-public /usr/share/grafana/public ; rm -rf /grafana-public
+[ ! -d /usr/share/grafana/conf ] && cp -R /grafana-files/conf /usr/share/grafana/conf
+[ ! -d /usr/share/grafana/public ] && cp -R /grafana/public /usr/share/grafana/public
+grafana-server > /var/log/grafana.log &
+tail -f /var/log/grafana.log
