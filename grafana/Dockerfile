@@ -8,14 +8,13 @@ RUN apk add --no-cache grafana
 
 WORKDIR /usr/share/grafana
 
-#COPY srcs/grafana.db /usr/share/grafana/data/grafana.db
-
 RUN touch /var/log/grafana.log
 
 COPY srcs/grafana-files /grafana-files
+COPY srcs/grafana.db /
 
-COPY srcs/entrypoint.sh /entrypoint.sh
+COPY srcs/docker-entrypoint.sh /docker-entrypoint.sh
 
-RUN chmod +x /entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
-CMD /entrypoint.sh && 
+CMD /docker-entrypoint.sh
