@@ -2,7 +2,9 @@ FROM alpine:3.7
 
 EXPOSE 3306
 
-RUN apk add --no-cache mysql mysql-client bash
+HEALTHCHECK CMD mysql -e "show databases;" || exit 1
+
+RUN apk add --no-cache mysql mysql-client
 
 RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
@@ -15,10 +17,5 @@ EXPOSE 3306
 RUN mkdir /data
 
 VOLUME /data
-
-#&& pkill -TERM mysqld
-# && \
-	#	rm -f create.sql
-	#/usr/bin/mysqld --user=mysql --console
 
 CMD sh docker-entrypoint.sh

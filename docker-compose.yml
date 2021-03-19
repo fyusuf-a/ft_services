@@ -23,19 +23,19 @@ services:
                         #- "5050:443"
                 #volumes:
                   #- wordpress:/var/www/html
-        #mysql:
-                #image: mysqld
-                #build:
-                    #context: ./mysql
-                #volumes:
-                    #- mysql-data:/data
-                #environment:
-                    #MYSQL_DATABASE: wordpress
-                    #MYSQL_USER: wordpress
-                    #MYSQL_PASSWORD: password
-                    #MYSQL_RANDOM_ROOT_PASSWORD: '1'
-                #ports:
-                    #- "3306:3306"
+        mysql:
+                image: mysqld
+                build:
+                    context: ./mysql
+                volumes:
+                    - mysql-data:/data
+                environment:
+                    MYSQL_DATABASE: wordpress
+                    MYSQL_USER: wordpress
+                    MYSQL_PASSWORD: password
+                    MYSQL_RANDOM_ROOT_PASSWORD: '1'
+                ports:
+                    - "3306:3306"
         influxdb:
             image: influxdb
             build:
