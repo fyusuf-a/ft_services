@@ -2,7 +2,9 @@ FROM alpine:3.13
 
 EXPOSE 9090
 
-RUN apk add --no-cache prometheus
+HEALTHCHECK CMD curl -v localhost:9090/-/healthy 2>&1 | grep "200 OK" || exit 1
+
+RUN apk add --no-cache prometheus curl
 
 COPY srcs/prometheus.yml /
 

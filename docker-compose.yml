@@ -1,14 +1,15 @@
 version: '3.1'
 
 services:
-        #ftps:
-                #image: vsftpd
-                #build:
-                    #context: ./ftps/
-                    #dockerfile: Dockerfile
-                #ports:
-                        #- 21:21
-                        #- 21000-21010:21000-21010
+        ftps:
+                image: vsftpd
+                build:
+                    context: ./ftps/
+                volumes:
+                    - ftps-data:/var/ftp
+                ports:
+                        - "21:21"
+                        - "21000-21010:21000-21010"
         #wordpress:
                 #image: wordpress
                 #build:
@@ -19,7 +20,7 @@ services:
                       #WORDPRESS_DB_PASSWORD: 'password'
                       #WORDPRESS_DB_NAME: 'wordpress'
                 #ports:
-                        #- 5050:443
+                        #- "5050:443"
                 #volumes:
                   #- wordpress:/var/www/html
         #mysql:
@@ -33,26 +34,29 @@ services:
                     #MYSQL_USER: wordpress
                     #MYSQL_PASSWORD: password
                     #MYSQL_RANDOM_ROOT_PASSWORD: '1'
+                #ports:
+                    #- "3306:3306"
         influxdb:
             image: influxdb
-            volumes:
-                - mysql-data:/root/.influxdb
             build:
                 context: ./influxdb
+            volumes:
+                - mysql-data:/root/.influxdb
         grafana:
             image: grafana
             build:
                 context: ./grafana
             ports:
-                - 3000:3000
+                - "3000:3000"
         prometheus:
             image: prometheus
             build:
                 context: ./prometheus
             ports:
-                - 9090:9090
+                - "9090:9090"
 
 volumes:
+    ftps-data:
     influxdb-data:
     mysql-data:
     wordpress:
