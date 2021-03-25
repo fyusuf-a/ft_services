@@ -2,46 +2,63 @@ version: '3.1'
 
 services:
         ftps:
-                image: vsftpd
-                build:
-                    context: ./ftps/
-                volumes:
-                    - ftps-data:/var/ftp
-                ports:
-                        - "21:21"
-                        - "21000-21010:21000-21010"
-        #wordpress:
-                #image: wordpress
-                #build:
-                    #context: ./wordpress/
-                    #args:
-                      #WORDPRESS_DB_HOST: 'mysql:3306'
-                      #WORDPRESS_DB_USER: 'wordpress'
-                      #WORDPRESS_DB_PASSWORD: 'password'
-                      #WORDPRESS_DB_NAME: 'wordpress'
-                #ports:
-                        #- "5050:443"
-                #volumes:
-                  #- wordpress:/var/www/html
+            image: vsftpd
+            build:
+                context: ./ftps/
+            volumes:
+                - ftps:/var/ftp
+            ports:
+                    - "21:21"
+                    - "21000-21010:21000-21010"
+        wordpress:
+            image: wordpress
+            build:
+                context: ./wordpress/
+                #args:
+                  #WORDPRESS_DB_HOST: 'mysql:3306'
+                  #WORDPRESS_DB_USER: 'wordpress'
+                  #WORDPRESS_DB_PASSWORD: 'password'
+                  #WORDPRESS_DB_NAME: 'wordpress'
+            ports:
+                    - "5050:5050"
+                    #- "443:443"
+            volumes:
+              - wordpress:/var/www/html
+            environment:
+              WORDPRESS_DB_HOST: 'mysql:3306'
+              WORDPRESS_DB_USER: 'wordpress'
+              WORDPRESS_DB_PASSWORD: 'password'
+              WORDPRESS_DB_NAME: 'wordpress'
+              URL: 'localhost:5050'
+              ADMIN_USER: 'admin'
+              ADMIN_EMAIL: 'admin@example.org'
+              ADMIN_PASSWORD: 'password'
+              EDITOR_USER: 'editor'
+              EDITOR_EMAIL: 'editor@example.org'
+              EDITOR_PASSWORD: 'password'
+              AUTHOR_USER: 'author'
+              AUTHOR_EMAIL: 'author@example.org'
+              AUTHOR_PASSWORD: 'password'
+              TITLE: 'ft_services'
         mysql:
-                image: mysqld
-                build:
-                    context: ./mysql
-                volumes:
-                    - mysql-data:/data
-                environment:
-                    MYSQL_DATABASE: wordpress
-                    MYSQL_USER: wordpress
-                    MYSQL_PASSWORD: password
-                    MYSQL_RANDOM_ROOT_PASSWORD: '1'
-                ports:
-                    - "3306:3306"
+            image: mysqld
+            build:
+                context: ./mysql
+            volumes:
+                - mysql:/data
+            environment:
+                MYSQL_DATABASE: wordpress
+                MYSQL_USER: wordpress
+                MYSQL_PASSWORD: password
+                MYSQL_RANDOM_ROOT_PASSWORD: '1'
+            ports:
+                - "3306:3306"
         influxdb:
             image: influxdb
             build:
                 context: ./influxdb
             volumes:
-                - mysql-data:/root/.influxdb
+                - influxdb:/root/.influxdb
         grafana:
             image: grafana
             build:
@@ -56,7 +73,7 @@ services:
                 - "9090:9090"
 
 volumes:
-    ftps-data:
-    influxdb-data:
-    mysql-data:
+    ftps:
+    influxdb:
+    mysql:
     wordpress:
