@@ -14,14 +14,8 @@ services:
             image: wordpress
             build:
                 context: ./wordpress/
-                #args:
-                  #WORDPRESS_DB_HOST: 'mysql:3306'
-                  #WORDPRESS_DB_USER: 'wordpress'
-                  #WORDPRESS_DB_PASSWORD: 'password'
-                  #WORDPRESS_DB_NAME: 'wordpress'
             ports:
                     - "5050:5050"
-                    #- "443:443"
             volumes:
               - wordpress:/var/www/html
             environment:
@@ -40,6 +34,14 @@ services:
               AUTHOR_EMAIL: 'author@example.org'
               AUTHOR_PASSWORD: 'password'
               TITLE: 'ft_services'
+        phpmyadmin:
+            image: phpmyadmin
+            build:
+                context: ./phpmyadmin
+            ports:
+                    - "5000:5000"
+            environment:
+              WORDPRESS_DB_HOST: 'mysql:3306'
         mysql:
             image: mysqld
             build:

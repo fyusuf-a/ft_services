@@ -1,15 +1,15 @@
 FROM alpine:3.13.2
 
-EXPOSE 5050
+EXPOSE 5000
 
-HEALTHCHECK CMD curl -kI https://localhost:5050 2>&1 | grep "200 OK" || exit 1
+HEALTHCHECK CMD curl -kI https://localhost:5000 2>&1 | grep "200 OK" || exit 1
 
 ARG WORDPRESS_DB_HOST=mysql
 ARG WORDPRESS_DB_USER=user
 ARG WORDPRESS_DB_PASSWORD=pass
 ARG WORDPRESS_DB_NAME=wordpress
 
-RUN apk add --no-cache nginx php7-fpm php7-mysqli php7-mbstring php7-json php7-phar openssl mysql-client curl
+RUN apk add --no-cache nginx phpmyadmin php7-fpm php7-session openssl curl
 
 # nginx
 RUN rm /etc/nginx/conf.d/default.conf
@@ -29,14 +29,9 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout /etc/ssl/private
 # Next line is to prevent error from the nginx executable not able to create a directory in /run
 RUN mkdir -p /run/nginx
 
-# Installing wp cli
-RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
+COPY srcs srcs/config.inc.php /etc/phpmyadmin/
 
-RUN mkdir -p /var/www/html
-
-RUN wp core download --path=/var/www/html/wordpress
-
-WORKDIR /var/www/html/wordpress
+WORKDIR /usr/share/webapps/phpmyadmin
 
 COPY srcs/docker-entrypoint.sh /
 
