@@ -10,6 +10,22 @@ services:
             ports:
                     - "21:21"
                     - "21000-21010:21000-21010"
+            networks:
+                - backend
+                - frontend
+        nginx:
+            image: nginx
+            build:
+                context: ./nginx/
+                args:
+                  WORDPRESS_EXTERNAL_NAME : 'localhost'
+                  PHPMYADMIN_DNS_NAME : 'phpmyadmin'
+            ports:
+                    - "80:80"
+                    - "443:443"
+            networks:
+                - backend
+                - frontend
         wordpress:
             image: wordpress
             build:
@@ -34,6 +50,9 @@ services:
               AUTHOR_EMAIL: 'author@example.org'
               AUTHOR_PASSWORD: 'password'
               TITLE: 'ft_services'
+            networks:
+                - frontend
+                - backend
         phpmyadmin:
             image: phpmyadmin
             build:
@@ -44,6 +63,9 @@ services:
               WORDPRESS_DB_HOST: 'mysql:3306'
               WORDPRESS_DB_USER: 'wordpress'
               WORDPRESS_DB_PASSWORD: 'password'
+            networks:
+                - frontend
+                - backend
         mysql:
             image: mysqld
             build:
@@ -57,25 +79,38 @@ services:
                 MYSQL_RANDOM_ROOT_PASSWORD: '1'
             ports:
                 - "3306:3306"
+            networks:
+                - backend
         influxdb:
             image: influxdb
             build:
                 context: ./influxdb
             volumes:
                 - influxdb:/root/.influxdb
+            networks:
+                - backend
         grafana:
             image: grafana
             build:
                 context: ./grafana
             ports:
                 - "3000:3000"
+            networks:
+                - backend
+                - frontend
         prometheus:
             image: prometheus
             build:
                 context: ./prometheus
             ports:
                 - "9090:9090"
+            networks:
+                - backend
+                - frontend
 
+networks:
+    frontend:
+    backend:
 volumes:
     ftps:
     influxdb:

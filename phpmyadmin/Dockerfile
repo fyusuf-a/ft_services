@@ -4,18 +4,13 @@ EXPOSE 5000
 
 HEALTHCHECK CMD curl -kI https://localhost:5000 2>&1 | grep "200 OK" || exit 1
 
-ARG WORDPRESS_DB_HOST=mysql
-ARG WORDPRESS_DB_USER=user
-ARG WORDPRESS_DB_PASSWORD=pass
-ARG WORDPRESS_DB_NAME=wordpress
+ENV WORDPRESS_DB_HOST=mysql WORDPRESS_DB_USER=user WORDPRESS_DB_PASSWORD=pass
 
 RUN apk add --no-cache nginx phpmyadmin php7-fpm php7-session openssl curl
 
 # nginx
-RUN rm /etc/nginx/conf.d/default.conf
-
 RUN ln -sf /dev/stdout /var/log/nginx/access.log ; \
-		ln -sf /dev/stderr /var/log/nginx/error.log
+	ln -sf /dev/stderr /var/log/nginx/error.log
 
 # php-fpm
 COPY srcs/fastcgi-php.conf /etc/nginx/fastcgi-php.conf
