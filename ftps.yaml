@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ftps
+  annotations:
+      metallb.universe.tf/allow-shared-ip: "true"
+spec:
+  type: LoadBalancer
+  ports:
+  - name: connection0
+    port: 21
+    targetPort: 21
+  - name: data0
+    port: 21000
+    targetPort: 21000
+  - name: data1
+    port: 21001
+    targetPort: 21001
+  - name: data2
+    port: 21002
+    targetPort: 21002
+  - name: data3
+    port: 21003
+    targetPort: 21003
+  - name: data4
+    port: 21004
+    targetPort: 21004
+  - name: data5
+    port: 21005
+    targetPort: 21005
+  - name: data6
+    port: 21006
+    targetPort: 21006
+  - name: data7
+    port: 21007
+    targetPort: 21007
+  - name: data8
+    port: 21008
+    targetPort: 21008
+  - name: data9
+    port: 21009
+    targetPort: 21009
+  - name: data10
+    port: 21010
+    targetPort: 21010
+  selector:
+    app: ftps
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ftps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ftps
+  template:
+    metadata:
+      labels:
+        app: ftps
+    spec:
+      containers:
+      - name: ftps
+        image: ftps
+        imagePullPolicy: Never

@@ -7,9 +7,9 @@ services:
                 context: ./ftps/
             volumes:
                 - ftps:/var/ftp
-            ports:
-                    - "21:21"
-                    - "21000-21010:21000-21010"
+            #ports:
+                    #- "21:21"
+                    #- "21000-21010:21000-21010"
             networks:
                 - backend
                 - frontend
@@ -20,9 +20,9 @@ services:
                 args:
                   WORDPRESS_EXTERNAL_NAME : 'localhost'
                   PHPMYADMIN_DNS_NAME : 'phpmyadmin'
-            ports:
-                    - "80:80"
-                    - "443:443"
+            #ports:
+                    #- "80:80"
+                    #- "443:443"
             networks:
                 - backend
                 - frontend
@@ -30,8 +30,8 @@ services:
             image: wordpress
             build:
                 context: ./wordpress/
-            ports:
-                    - "5050:5050"
+            #ports:
+                    #- "5050:5050"
             volumes:
               - wordpress:/var/www/html
             environment:
@@ -57,8 +57,8 @@ services:
             image: phpmyadmin
             build:
                 context: ./phpmyadmin
-            ports:
-                    - "5000:5000"
+            #ports:
+                    #- "5000:5000"
             environment:
               WORDPRESS_DB_HOST: 'mysql:3306'
               WORDPRESS_DB_USER: 'wordpress'
@@ -77,8 +77,8 @@ services:
                 MYSQL_USER: wordpress
                 MYSQL_PASSWORD: password
                 MYSQL_RANDOM_ROOT_PASSWORD: '1'
-            ports:
-                - "3306:3306"
+            #ports:
+                #- "3306:3306"
             networks:
                 - backend
         influxdb:
@@ -93,8 +93,8 @@ services:
             image: grafana
             build:
                 context: ./grafana
-            ports:
-                - "3000:3000"
+            #ports:
+                #- "3000:3000"
             networks:
                 - backend
                 - frontend
@@ -102,8 +102,8 @@ services:
             image: prometheus
             build:
                 context: ./prometheus
-            ports:
-                - "9090:9090"
+            #ports:
+                #- "9090:9090"
             networks:
                 - backend
                 - frontend
