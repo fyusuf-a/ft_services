@@ -13,8 +13,9 @@ RUN apk add --no-cache nginx php7-fpm php7-mysqli php7-mbstring php7-json php7-p
 
 # nginx
 RUN ln -sf /dev/stdout /var/log/nginx/access.log ; \
-	ln -sf /dev/stderr /var/log/nginx/error.log ; \
-	openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout /etc/ssl/private/ssl-cert-snakeoil.key -out /etc/ssl/certs/ssl-cert-snakeoil.pem -subj '/CN=localhost' 
+	ln -sf /dev/stderr /var/log/nginx/error.log ;
+
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout /etc/ssl/private/ssl-cert-snakeoil.key -out /etc/ssl/certs/ssl-cert-snakeoil.pem -subj '/CN=localhost' 
 
 # php-fpm
 COPY srcs/fastcgi-php.conf /etc/nginx/fastcgi-php.conf
