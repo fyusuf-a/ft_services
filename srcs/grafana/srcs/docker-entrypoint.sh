@@ -7,5 +7,6 @@ if [ ! -f /usr/share/grafana/data/grafana.db ]; then
 fi
 rm -f /grafana.db
 
+prometheus --config.file=/prometheus.yml > /var/log/prometheus.log &
 grafana-server > /var/log/grafana.log &
-tail -f /var/log/grafana.log
+tail -fv /var/log/grafana.log /var/log/prometheus.log
