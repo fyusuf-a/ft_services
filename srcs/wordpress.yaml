@@ -61,5 +61,3 @@ spec:
           value: "password"
         - name: TITLE
           value: "ft_services"
-        ports:
-            - containerPort: 5050
