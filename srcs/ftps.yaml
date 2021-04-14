@@ -64,3 +64,22 @@ spec:
       - name: ftps
         image: ftps
         imagePullPolicy: Never
+        #volumeMounts:
+        #- mountPath: "/var/ftp"
+          #name: mypv
+          #subPath: ftps
+      #volumes:
+      #- name: mypv
+        #persistentVolumeClaim:
+          #claimName: ftps-pv-claim
+#---
+#kind: PersistentVolumeClaim
+#apiVersion: v1
+#metadata:
+  #name: ftps-pv-claim
+#spec:
+    #accessModes:
+    #- ReadWriteOnce
+    #resources:
+      #requests:
+        #storage: 100M

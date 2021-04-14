@@ -1,15 +1,29 @@
 minikube delete
 minikube start --cpus 2 --vm-driver=docker
 IP=$(minikube ip)
+#IP=192.168.49.1
 minikube addons enable metrics-server
 
+# Generation of certificates
+openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout ssl-cert-snakeoil.key -out ssl-cert-snakeoil.pem -subj '/CN=localhost'
+ln -f $PWD/ssl-cert-snakeoil.key $PWD/srcs/ftps/srcs/priv.key
+ln -f $PWD/ssl-cert-snakeoil.pem $PWD/srcs/ftps/srcs/cert.pem
+ln -f $PWD/ssl-cert-snakeoil.key $PWD/srcs/wordpress/srcs/priv.key
+ln -f $PWD/ssl-cert-snakeoil.pem $PWD/srcs/wordpress/srcs/cert.pem
+ln -f $PWD/ssl-cert-snakeoil.key $PWD/srcs/phpmyadmin/srcs/priv.key
+ln -f $PWD/ssl-cert-snakeoil.pem $PWD/srcs/phpmyadmin/srcs/cert.pem
+ln -f $PWD/ssl-cert-snakeoil.key $PWD/srcs/nginx/srcs/priv.key
+ln -f $PWD/ssl-cert-snakeoil.pem $PWD/srcs/nginx/srcs/cert.pem
+
 # Installation of metallb
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/metallb.yaml
 cat srcs/metallb.yaml | sed "s/%IP%/$IP/g" | kubectl apply -f -
 # On first install only
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
 # Installation of prometheus
-kubectl apply -f srcs/prometheus.yaml
+#kubectl apply -f srcs/prometheus.yaml
 
 eval $(minikube -p minikube docker-env)
 docker build srcs/mysql -t mysql

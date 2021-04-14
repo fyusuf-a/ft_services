@@ -23,6 +23,8 @@ spec:
     metadata:
       labels:
         app: influxdb
+      annotations:
+        prometheus.io/scrape: 'true'
     spec:
       containers:
       - name: influxdb

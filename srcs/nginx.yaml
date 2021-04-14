@@ -13,9 +13,6 @@ spec:
   - port: 443
     name: https
     targetPort: 443
-  - port: 22
-    name: remainder
-    targetPort: 443
   selector:
     app: nginx
 ---
