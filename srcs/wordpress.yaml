@@ -61,3 +61,15 @@ spec:
           value: "password"
         - name: TITLE
           value: "ft_services"
+        startupProbe:
+            httpGet:
+              path: /
+              scheme: HTTPS
+              port: 5050
+            periodSeconds: 10
+        livenessProbe:
+            httpGet:
+              path: /
+              scheme: HTTPS
+              port: 5050
+            periodSeconds: 5

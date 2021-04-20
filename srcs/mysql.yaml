@@ -6,6 +6,7 @@ spec:
   type: ClusterIP
   ports:
     - port: 3306
+      name: mysql
       targetPort: 3306
   selector:
     app: mysql
@@ -37,3 +38,22 @@ spec:
           value: "password"
         - name: MYSQL_RANDOM_ROOT_PASSWORD
           value: "1"
+        #volumeMounts:
+        #- mountPath: "/data"
+          #name: mypv
+          #subPath: ftps
+      #volumes:
+      #- name: mypv
+        #persistentVolumeClaim:
+          #claimName: ftps-pv-claim
+#---
+#kind: PersistentVolumeClaim
+#apiVersion: v1
+#metadata:
+  #name: ftps-pv-claim
+#spec:
+    #accessModes:
+    #- ReadWriteOnce
+    #resources:
+      #requests:
+        #storage: 100M

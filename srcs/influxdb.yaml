@@ -6,6 +6,7 @@ spec:
   type: ClusterIP
   ports:
     - port: 8086
+      name: influxdb
       targetPort: 8086
   selector:
     app: influxdb
@@ -30,3 +31,14 @@ spec:
       - name: influxdb
         image: influxdb
         imagePullPolicy: Never
+        startupProbe:
+            httpGet:
+              path: /health
+              port: 8086
+            periodSeconds: 10
+        livenessProbe:
+            httpGet:
+              path: /health
+              port: 8086
+            failureThreshold: 1
+            periodSeconds: 5

@@ -1,5 +1,5 @@
 minikube delete
-minikube start --cpus 2 --vm-driver=docker
+minikube start --cpus 2 --vm-driver=docker #--extra-config=kubelet.CAdvisorPort=4194
 IP=$(minikube ip)
 #IP=192.168.49.1
 minikube addons enable metrics-server
@@ -22,8 +22,8 @@ cat srcs/metallb.yaml | sed "s/%IP%/$IP/g" | kubectl apply -f -
 # On first install only
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
-# Installation of prometheus
-#kubectl apply -f srcs/prometheus.yaml
+# Authorization via a service account of Prometheus
+kubectl apply -f srcs/prometheus.yaml
 
 eval $(minikube -p minikube docker-env)
 docker build srcs/mysql -t mysql
@@ -46,3 +46,6 @@ kubectl apply -f srcs/nginx.yaml
 
 docker build srcs/grafana -t grafana
 kubectl apply -f srcs/grafana.yaml
+
+docker build srcs/telegraf -t telegraf --build-arg IP=$IP
+kubectl apply -f srcs/telegraf.yaml

@@ -11,6 +11,6 @@ RUN apk add --no-cache influxdb
 
 COPY srcs/docker-entrypoint.sh /
 
-RUN touch /var/log/influxdb.log ; chmod +x /docker-entrypoint.sh
+RUN touch /var/log/influxdb.log
 
-CMD /docker-entrypoint.sh
+CMD sh docker-entrypoint.sh

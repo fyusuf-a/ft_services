@@ -10,8 +10,6 @@ RUN apk add --no-cache nginx phpmyadmin php7-fpm php7-session ; \
 	ln -sf /dev/stdout /var/log/nginx/access.log ; \
 	ln -sf /dev/stderr /var/log/nginx/error.log ; \
 	mkdir -p /run/nginx
-# apk add --no-cache curl openssl
-# openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout /etc/ssl/private/ssl-cert-snakeoil.key -out /etc/ssl/certs/ssl-cert-snakeoil.pem -subj '/CN=localhost' ; \
 
 COPY srcs/priv.key /etc/ssl/private/ssl-cert-snakeoil.key
 COPY srcs/cert.pem /etc/ssl/certs/ssl-cert-snakeoil.pem
@@ -27,7 +25,5 @@ COPY srcs srcs/config.inc.php /etc/phpmyadmin/
 WORKDIR /usr/share/webapps/phpmyadmin
 
 COPY srcs/docker-entrypoint.sh /
-
-#RUN chmod +x /docker-entrypoint.sh
 
 CMD sh /docker-entrypoint.sh

@@ -6,7 +6,8 @@ FROM alpine:3.13.2
 
 #VOLUME /usr/share/grafana
 
-RUN apk add --no-cache grafana prometheus
+RUN apk add --no-cache grafana
+##prometheus
 #curl
 
 WORKDIR /usr/share/grafana
@@ -15,7 +16,8 @@ COPY srcs/grafana-files /grafana-files
 
 COPY srcs/root/* /
 
-RUN touch /var/log/grafana.log /var/log/prometheus.log
+RUN touch /var/log/grafana.log 
+##/var/log/prometheus.log
 #; chmod +x /docker-entrypoint.sh
 
 CMD sh /docker-entrypoint.sh
