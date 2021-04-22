@@ -12,4 +12,10 @@ WORKDIR /usr/share/grafana
 
 COPY srcs/grafana.db /usr/share/grafana/data/
 
+COPY srcs/defaults.ini /usr/share/grafana/conf/
+
+COPY srcs/ssl-cert-snakeoil.key /etc/ssl/private/
+
+COPY srcs/ssl-cert-snakeoil.pem /etc/ssl/certs/
+
 CMD grafana-server

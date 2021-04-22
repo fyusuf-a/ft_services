@@ -14,6 +14,8 @@ ln -f $PWD/ssl-cert-snakeoil.key $PWD/srcs/phpmyadmin/srcs/priv.key
 ln -f $PWD/ssl-cert-snakeoil.pem $PWD/srcs/phpmyadmin/srcs/cert.pem
 ln -f $PWD/ssl-cert-snakeoil.key $PWD/srcs/nginx/srcs/priv.key
 ln -f $PWD/ssl-cert-snakeoil.pem $PWD/srcs/nginx/srcs/cert.pem
+ln -f $PWD/ssl-cert-snakeoil.key $PWD/srcs/grafana/srcs/priv.key
+ln -f $PWD/ssl-cert-snakeoil.pem $PWD/srcs/grafana/srcs/cert.pem
 
 # Installation of metallb
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/namespace.yaml
@@ -49,3 +51,5 @@ kubectl apply -f srcs/grafana.yaml
 
 docker build srcs/telegraf -t telegraf --build-arg IP=$IP
 kubectl apply -f srcs/telegraf.yaml
+
+minikube dashboard
