@@ -4,7 +4,7 @@ FROM alpine:3.13.2
 
 #HEALTHCHECK CMD curl -s localhost:8086/health | grep "ready for queries" || exit 1
 
-VOLUME /root/.influxdb
+#VOLUME /root/.influxdb
 
 RUN apk add --no-cache influxdb
 #curl

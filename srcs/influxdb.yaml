@@ -42,3 +42,22 @@ spec:
               port: 8086
             failureThreshold: 1
             periodSeconds: 5
+        volumeMounts:
+        - mountPath: "/root/.influxdb"
+          name: mypv
+          subPath: influxdb
+      volumes:
+      - name: mypv
+        persistentVolumeClaim:
+          claimName: ftps-pv-claim
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: ftps-pv-claim
+spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100M

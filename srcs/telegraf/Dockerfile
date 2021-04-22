@@ -1,23 +1,14 @@
-FROM alpine
+FROM alpine:3.13.2
 
 ARG IP
 ENV IP=$IP
 
-RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.14.0-static_linux_amd64.tar.gz ; \
-        tar xf telegraf-1.14.0-static_linux_amd64.tar.gz ; \
-        chmod +x telegraf/* ; \
-        mkdir /etc/telegraf ; \
-        cp telegraf/telegraf /usr/bin/ ; \
-	rm telegraf-1.14.0-static_linux_amd64.tar.gz
-
-RUN apk add libc6-compat
+ENV DATABASE_DNS_NAME=influxdb
 
 COPY /telegraf.conf /etc/telegraf/telegraf.conf
 
-COPY /telegraf.conf /telegraf/telegraf.conf
+RUN apk add --no-cache telegraf ; \
+	sed -i "s/%IP%/$IP/g" /etc/telegraf/telegraf.conf ; \
+	sed -i "s/%DATABASE_DNS_NAME%/$DATABASE_DNS_NAME/g" /etc/telegraf/telegraf.conf
 
-CMD sed -i "/s/%IP%/$IP/g" /etc/telegraf.conf ; \
-	sed -i "/s/%IP%/$IP/g" /telegraf/telegraf.conf
-
-#CMD /bin/sh
-CMD /usr/bin/telegraf 
+CMD telegraf

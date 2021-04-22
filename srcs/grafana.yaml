@@ -43,6 +43,5 @@ spec:
             httpGet:
               path: /api/health
               port: 3000
-            failureThreshold: 1
             periodSeconds: 5
       #serviceAccountName: prometheus

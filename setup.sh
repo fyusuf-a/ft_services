@@ -2,7 +2,7 @@ minikube delete
 minikube start --cpus 2 --vm-driver=docker #--extra-config=kubelet.CAdvisorPort=4194
 IP=$(minikube ip)
 #IP=192.168.49.1
-minikube addons enable metrics-server
+#minikube addons enable metrics-server
 
 # Generation of certificates
 openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout ssl-cert-snakeoil.key -out ssl-cert-snakeoil.pem -subj '/CN=localhost'
