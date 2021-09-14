@@ -1,4 +1,4 @@
-# 42docker
+# ft_services
 A [42](https://42.fr/en/homepage/) project consisting of a kubernetes cluster on a local node, including homemade Alpine containers for:
 - a FTP server
 - a web server with Wordpress and phpMyAdmin
